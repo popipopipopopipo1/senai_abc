@@ -1,7 +1,11 @@
+const db = require('./database.js');
+const { table } = require("console");
 const express = require("express")
 const app = express()
 const port = 8080
 const path = require('path');
+
+
 app.use(express.json());
 
 app.get('/api-tester', (req,res) => {
@@ -9,7 +13,7 @@ app.get('/api-tester', (req,res) => {
 });
 
 app.get('/rota', (req,res) => {
-    res.send('<h1>Aula <h1>')
+    res.send('<h1>Aula <h1>');
 })
 
 app.post('/rota', (req, res) => {
@@ -19,4 +23,15 @@ app.post('/rota', (req, res) => {
 
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
+})
+///23/09
+app.get('/usuario/:id', (req, res) => {
+	parametro = req.params.id
+  db.get("SELECT * FROM user WHERE id = ?", parametro, (error, row) => {
+  	if(error) {
+    	res.json(error)
+      return
+    }
+    res.send(row)
+  })
 })
