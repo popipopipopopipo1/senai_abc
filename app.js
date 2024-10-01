@@ -24,10 +24,10 @@ app.post('/rota', (req, res) => {
 app.listen(port, () => {
 console.log(`Example app listening on port ${port}`)
 })
-///23/09
-app.get('/usuario/:id', (req, res) => {
-	parametro = req.params.id
-  db.get("SELECT * FROM user WHERE id = ?", parametro, (error, row) => {
+////30/09
+app.get('/tasks/:id', (req, res) => {
+	parametro1 = req.params.id
+  db.query("SELECT * FROM tasks WHERE id = ?", parametro1, (error, row) => {
   	if(error) {
     	res.json(error)
       return
@@ -35,3 +35,30 @@ app.get('/usuario/:id', (req, res) => {
     res.send(row)
   })
 })
+app.get('/tasks', (req, res) => {
+  db.query("SELECT * FROM tasks ORDER BY id ASC", (error, rows) => {
+  	if(error) {
+    	console.log(error)
+      return
+    }
+    res.send(rows)
+  })
+})
+app.post('/tasks', (req, res) => {
+  console.log('Dados recebidos no body:', req.body);
+  res.json(req.body);
+    if(error) {
+    	console.log(error)
+      return
+              }
+    res.send(rows)
+db.query = 'INSERT INTO tasks (title, description) VALUES (?, ?)';
+      connection.query(query, [title, description], (error, results) => {
+      if (error) {
+        console.error('Erro ao inserir no banco de dados:', error);
+        return res.status(500).json({ error: 'Erro ao salvar a tarefa' });
+      }
+      res.status(201).json({ id: results.insertId, title, description }); // Retorne a nova tarefa criada
+      });
+    });
+
