@@ -4,6 +4,7 @@ const express = require("express")
 const app = express()
 const port = 8080
 const path = require('path');
+require("dotenv").config()
 
 
 app.use(express.json());
@@ -13,7 +14,7 @@ app.get('/api-tester', (req,res) => {
 });
 
 app.get('/rota', (req,res) => {
-    res.send('<h1>Aula <h1>');
+    console.log(process.env.DBHOST);
 })
 
 app.post('/rota', (req, res) => {
@@ -44,21 +45,40 @@ app.get('/tasks', (req, res) => {
     res.send(rows)
   })
 })
+/////1/10
 app.post('/tasks', (req, res) => {
-  console.log('Dados recebidos no body:', req.body);
-  res.json(req.body);
-    if(error) {
-    	console.log(error)
+  const parametros = req.body
+  console.log(parametros)
+  db.query(`INSERT INTO tasks (titulo, descricao, status) VALUES ('${parametros.titulo}', '${parametros.descricao}', '${parametros.status}')`, (error, row) => {
+  	if(error) {
+    	res.json(error)
       return
-              }
-    res.send(rows)
-db.query = 'INSERT INTO tasks (title, description) VALUES (?, ?)';
-      connection.query(query, [title, description], (error, results) => {
-      if (error) {
-        console.error('Erro ao inserir no banco de dados:', error);
-        return res.status(500).json({ error: 'Erro ao salvar a tarefa' });
-      }
-      res.status(201).json({ id: results.insertId, title, description }); // Retorne a nova tarefa criada
-      });
-    });
+    }
+    res.send(row)
+  })
+});
+
+app.put('/tasks/:id', (req, res) => {
+  const parametro1 = req.body
+  console.log(parametro1)
+  db.query(`UPDATE tasks SET titulo = '${parametro1.titulo}', descricao = '${parametro1.descricao}', status = '${parametro1.status}' WHERE id = ?`, req.params.id,  (error, row) => {
+  	if(error) {
+    	res.json(error)
+      return
+    }
+    res.send(row)
+  })
+});
+
+app.delete('/tasks/:id', (req, res) =>{
+  const parametro2 = req.body
+  console.log(parametro2)
+  db.query(`DELETE FROM tasks WHERE id = ?`, req.params.id,  (error, row) => {
+  	if(error) {
+    	res.json(error)
+      return
+    }
+    res.send(row)
+  })
+})
 
