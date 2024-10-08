@@ -1,10 +1,10 @@
+require("dotenv").config()
 const db = require('./database.js');
 const { table } = require("console");
 const express = require("express")
 const app = express()
 const port = 8080
 const path = require('path');
-require("dotenv").config()
 
 
 app.use(express.json());
