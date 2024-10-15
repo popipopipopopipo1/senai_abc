@@ -81,4 +81,60 @@ app.delete('/tasks/:id', (req, res) =>{
     res.send(row)
   })
 })
+//////////// 14/10
+app.get('/users/:id', (req, res) => {
+	parametro1 = req.params.id
+  db.query("SELECT * FROM users WHERE id = ?", parametro1, (error, row) => {
+  	if(error) {
+    	res.json(error)
+      return
+    }
+    res.send(row)
+  })
+})
+app.get('/users', (req, res) => {
+  db.query("SELECT * FROM users ORDER BY id ASC", (error, rows) => {
+  	if(error) {
+    	console.log(error)
+      return
+    }
+    res.send(rows)
+  })
+})
+
+app.post('/users', (req, res) => {
+  const parametros = req.body
+  console.log(parametros)
+  db.query(`INSERT INTO users (nome) VALUES ('${parametros.titulo}')`, (error, row) => {
+  	if(error) {
+    	res.json(error)
+      return
+    }
+    res.send(row)
+  })
+});
+
+app.put('/users/:id', (req, res) => {
+  const parametro1 = req.body
+  console.log(parametro1)
+  db.query(`UPDATE users SET nome = '${parametro1.titulo}' WHERE id = ?`, req.params.id,  (error, row) => {
+  	if(error) {
+    	res.json(error)
+      return
+    }
+    res.send(row)
+  })
+});
+
+app.delete('/users/:id', (req, res) =>{
+  const parametro2 = req.body
+  console.log(parametro2)
+  db.query(`DELETE FROM users WHERE id = ?`, req.params.id,  (error, row) => {
+  	if(error) {
+    	res.json(error)
+      return
+    }
+    res.send(row)
+  })
+})
 
